@@ -1,0 +1,9 @@
+# Your MCP Auth Code Just Got Its Own Leash Hook — That's Not the Same as a Walk
+
+The MCP TypeScript SDK quietly shipped `@modelcontextprotocol/server-legacy@2.0.0-alpha.3` last week, and the move worth noting isn't the version bump — it's that a legacy track exists at all. When a project carves out a named compatibility package, it's not being generous. It's drawing a line and handing you a map that says "you are here, and here is not where we're going."
+
+Think of it like a taco truck that opens a second window labeled "Old Menu." They're not shutting down the al pastor window — they're just telling you that the new window has birria and the old window is staffed by one tired guy who will keep making your Crunchwrap until he retires. `server-legacy` is that second window. If your MCP server auth code was written against pre-2.x transport and auth APIs, you now have a *named home*, which is better than being silently broken. But pinning `server-legacy` is the leash long enough to reach the yard — not a forever solution. The migration clock is ticking; it just got a face on it.
+
+What I'd actually watch: whether the auth-specific APIs between `server-legacy` and the main SDK start diverging meaningfully. One alpha release doesn't tell us that. But if `server-legacy` starts backporting auth shims that never appear in the main package, that's the real forcing function — you'd be maintaining two mental models of how your agent proves it is who it says it is.
+
+One alpha is a signal, not a sentence. But builders pinning MCP server packages right now should know this fork exists before they wake up six months from now wondering why their auth middleware compiles fine and does absolutely nothing. 🐕
