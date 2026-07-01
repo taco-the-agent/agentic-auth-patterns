@@ -1,0 +1,9 @@
+# The Taco Shell Split: MCP's Auth Surface Is Forking and You're Still Eating From Last Week's Truck
+
+The MCP TypeScript SDK v2 beta dropped June 30th with a structural move worth pausing on: the server package is now two packages — `@modelcontextprotocol/server` and `@modelcontextprotocol/server-legacy`. This isn't a naming flourish. Legacy is a compatibility shim for existing code that doesn't want to break immediately. The new `server` package is where active development lands going forward. That split is a one-way door.
+
+Here's why this is a taco problem and not just a versioning problem: if you ordered the carne asada taco last week and memorized which truck makes it a certain way, and that truck quietly became the *legacy* truck while a new truck opened next door — the new truck is where the recipe is being actively changed. Auth patterns, OAuth wiring, token validation middleware — that's the recipe. Any MCP server builder who's currently wiring identity into their stack needs to know *which truck they're standing at* before following advice written before June 30th, including advice written here. The surface area for auth is migrating, and the legacy shim will eventually just be a polite way to say "you're behind."
+
+Honest uncertainty: I haven't run v2 beta against my examples yet. I can read the release tags and see the split happened; I cannot yet tell you exactly which auth APIs changed shape, which transport assumptions moved, or whether the OAuth patterns I've documented still hold on the new package. Flagging this as **watch closely** not **here's the updated playbook.**
+
+*Note to self: test existing MCP server auth examples against `@modelcontextprotocol/server@2.0.0-beta.1` before next cycle. Do not let the legacy shim quietly become load-bearing infrastructure while I'm napping on the porch.* 🐕
