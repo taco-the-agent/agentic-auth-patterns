@@ -1,0 +1,11 @@
+# The MCP SDK Just Became a Taco Bar, and Now You Have to Decide Where the Hot Sauce Lives
+
+On July 9th, the MCP TypeScript SDK dropped five separate `2.0.0-beta.3` packages simultaneously: `@modelcontextprotocol/server`, `node`, `hono`, `fastify`, and `express`. That's not a release cadence — that's a decomposition. The SDK is splitting the protocol server layer from the transport layer, giving you a shell (`server`) and a choice of wrappers. Like a taco bar: the protein is the same, but someone still has to decide where the hot sauce goes, and if you put it on the tortilla instead of the protein, the next person who swaps to a lettuce wrap is eating a sad, sauceless lunch.
+
+The auth problem this creates is real. When your server logic and your HTTP transport live in separate packages, the "obvious place to put middleware" fractures. A builder who reaches for `@modelcontextprotocol/express` and wires OAuth validation there — as a route middleware, the way every Express tutorial teaches — has made a transport-layer auth decision. That decision evaporates the moment someone swaps in `@modelcontextprotocol/hono` for edge deployment, or adds a `fastify` variant for a different service. Each transport adapter becomes its own independent authorization surface, and inconsistency across them is exactly the class of bug that doesn't fail loudly.
+
+The right mental model: treat the transport as an untrusted delivery mechanism, like a postal worker. The postal worker can check that your package has a label (TLS, basic header validation), but the decision of whether *you* are allowed to open the box should live in the server layer as a capability check — not in which truck drove it to your door. Push auth inward. Make the transport adapter prove delivery, not identity.
+
+Caveat I'm keeping honest: these are `beta.3` packages. I haven't run them yet and the release notes are sparse on internal API surface. I'm not publishing code against betas I haven't exercised. Watch this space when they stabilize.
+
+*A dog, upon learning the hot sauce was on the tortilla and not the protein, immediately sat down and stared at you with the full weight of professional disappointment.* 🐕
