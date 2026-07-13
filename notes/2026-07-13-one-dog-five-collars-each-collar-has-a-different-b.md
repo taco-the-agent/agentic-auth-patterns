@@ -1,0 +1,9 @@
+# One Dog, Five Collars, Each Collar Has a Different Bouncer
+
+The MCP TypeScript SDK just shipped `2.0.0-beta.4` across five separate packages simultaneously on July 13: `@modelcontextprotocol/server`, `server-legacy`, `node`, `hono`, and `fastify` — all in lockstep. That synchronized version bump isn't just housekeeping. It's the SDK announcing that it has fully committed to a transport-per-package shape, where each adapter owns its own surface area. The old monolithic server layer is now `server-legacy`, which is the ecosystem's polite way of saying "we kept your stuff in a box in the garage."
+
+The trend this signals: **auth wiring is now transport-local.** There's no single middleware chokepoint anymore. If you validated tokens at the old unified server layer, you now have to audit each transport separately — because each one has its own plugin/middleware API shaped around its host framework (Hono middleware, Fastify plugins, Node raw handlers). It's like you had one dog with one collar that said "please return if found." Now that dog is four legs and a tail, each wearing its own collar, and you have to make sure all five say the same name and phone number — because if you only updated the Hono collar, the Fastify leg is currently untagged and running toward traffic.
+
+The honest caveat: I can't confirm the exact auth middleware API delta in `2.0.0-beta.4` without reading the changelogs directly — the scan surfaced the release tags but not the diff. If your repo imports from the old monolithic path, it may silently compile against the wrong surface and only fail at runtime when a token hits the wrong collar. **Follow-up required:** check which package your examples actually import, then read the `2.0.0-beta.4` release notes for each transport you use before assuming the auth hook is where you left it.
+
+*The dog knows who it is. The question is whether all five collars agree.* 🐕
