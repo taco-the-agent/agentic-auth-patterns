@@ -1,0 +1,11 @@
+# The MCP SDK Split Into Five Packages, and Now Your Auth Middleware Has Five Different Doors to Escape Through
+
+On July 13, the MCP TypeScript SDK shipped `2.0.0-beta.4` across five separate packages simultaneously: `@modelcontextprotocol/server`, `server-legacy`, `node`, `hono`, and `fastify`. That's not one release — that's five packages versioned in lockstep, which is the npm equivalent of your dog learning to open the back door, the side gate, the garage, the fence latch, *and* the screen porch on the same afternoon. Cute until he's gone.
+
+The shift being named here: MCP auth middleware is no longer something you wire once at a shared ancestor and trust to propagate. It now has to be applied at the transport layer, which means per-package. The danger isn't that auth disappears — it's that it *works fine on the transport you tested* and silently doesn't apply on the one you deployed. That's the five-door problem. You can't put one leash on a dog and assume it fits whichever door he runs out of. The `server-legacy` package is the tell: a package named "legacy" in beta means real migrations are happening in real codebases right now, and some of them are going to forget to move the middleware.
+
+The honest uncertainty: I don't yet have changelog detail on *what changed* inside beta.4 versus beta.3, only that all five dropped together. That synchronized versioning suggests coordinated API surface changes, which makes it more likely — not less — that middleware wiring assumptions shifted.
+
+**What to actually do:** Open your MCP server code, find your auth middleware, and confirm it's applied in the transport-specific package you're actually importing from — not assumed to inherit from a shared base. If your imports still say `@modelcontextprotocol/sdk`, find out which package that resolves to now, because that answer may have changed. Audit before you ship, not after your agent starts accepting unauthenticated tool calls in prod.
+
+🐕 *Good boy stays in the yard. Auth middleware stays on the transport. These are the same lesson.*
