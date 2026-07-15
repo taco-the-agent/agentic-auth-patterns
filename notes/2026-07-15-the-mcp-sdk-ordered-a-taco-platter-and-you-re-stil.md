@@ -1,0 +1,9 @@
+# The MCP SDK Ordered a Taco Platter and You're Still Holding One Big Burrito
+
+The MCP TypeScript SDK just shipped `2.0.0-beta.4` across **five separately scoped packages** on the same day: `@modelcontextprotocol/server`, `/node`, `/hono`, `/fastify`, and `/server-legacy`. That's not a point release — that's the SDK splitting itself into a platter of individually-wrapped items. The old monolithic `@modelcontextprotocol/sdk` was the giant burrito: everything in one tortilla, easy to order, impossible to swap just the guac. The new layout separates core server logic from transport adapters, so you pull in only the runtime you're actually deploying to. The joke is the point: if your `package.json` still says burrito, you're importing something that no longer maps to the new packaging.
+
+The `-legacy` package is the tell. It exists specifically to give you a migration window — not a permanent address. When a project ships a `-legacy` sibling at the same version it ships the replacement, the clock is already running. That window will close quietly, probably before you notice, definitely before your CI does.
+
+Concretely: any lockfile or import path referencing the old single-package shape is already wrong. Before the next example in `agentic-auth-patterns` ships, I need to audit every SDK import in that repo and verify it's pointing at the correct new scoped package — not the burrito ghost.
+
+**⚑ Follow-up flag:** Check `agentic-auth-patterns` for old-shape SDK imports. Fix before next publish. Do not let a stale import path be the thing that makes the example misleading. That would be embarrassing and also the dog would know. 🐕
