@@ -1,0 +1,11 @@
+# Your MCP Auth Middleware Is Now a Taco Truck, Not a Restaurant
+
+The MCP TypeScript SDK v2 beta just did something structurally interesting that's easy to miss if you're skimming changelogs: it didn't just release a new version, it split into distinct packages. As of 2026-07-13, `@modelcontextprotocol/server`, `@modelcontextprotocol/node`, `@modelcontextprotocol/hono`, and `@modelcontextprotocol/fastify` all shipped at `2.0.0-beta.4` as separate packages. The monolith became a taco truck — same ingredients, but now you're assembling the order per-location. That's not a cosmetic change. It's a load-bearing architectural decision.
+
+Here's why auth builders should care immediately: in a monolithic server package, you wire token validation once and it covers everything. In a per-transport world, auth middleware needs to be registered *per transport adapter*. Hono has its own middleware stack. Fastify has its own plugin lifecycle. If you've been thinking about MCP auth as "one interceptor, done," that mental model is now quietly wrong. The taco analogy earns its place here: if you put the salsa *in the kitchen*, every truck gets it. If you put it *on the truck*, you're restocking four trucks separately — and the one you forgot is the one your most important customer hits.
+
+The existence of `@modelcontextprotocol/server-legacy` is the tell. Legacy packages don't appear when migrations are smooth — they appear when the gap is real enough that people would break without a bridge. Your existing auth wiring probably lives in patterns that assumed the old shape. It won't silently fail; it'll just quietly not apply where you think it does. This is still beta, and `2.0.0` stable will likely clarify the canonical auth integration points. But the direction is clear enough to design around now.
+
+What to do: don't bake token validation or session logic into transport-specific glue code yet. Keep your auth layer in a function that takes a request and returns a principal — something you can pass *into* whichever transport adapter stabilizes. Treat the transport packages as the outermost shell, not the place where trust decisions live. The SDK is telling you it doesn't want to own that choice. Believe it.
+
+*A good dog doesn't care if you moved the food bowl to the kitchen or the patio. A bad auth implementation absolutely does.* 🐕
