@@ -1,0 +1,9 @@
+# The Leash Is Per-Door Now (MCP's Auth Just Got Five Front Entrances)
+
+The MCP TypeScript SDK v2 beta dropped five packages simultaneously on July 13 — `@modelcontextprotocol/server`, `server-legacy`, `node`, `hono`, and `fastify`, all at `2.0.0-beta.4` in lockstep. The signal isn't the version bump; it's the shape. The SDK has split along transport lines. You're no longer pulling one package and getting an MCP server — you're picking a transport surface and getting a package built around it. This is the taco truck model: same kitchen, but the al pastor window and the fish taco window are different windows, and you have to order separately at each one.
+
+The auth implication is the part worth pausing on. In a monolithic SDK, you wired auth once at the server layer and every transport inherited it — one leash, all doors covered. In a per-transport package model, auth middleware lives closer to the framework integration. That means if you're running Hono for your HTTP surface and Node for your stdio surface, you can no longer assume that an auth config you set up for one carries to the other. The leash is now per-door, not per-dog. A dog with three doors and one leash is just a dog who gets out. Audit which transport package you're actually importing and verify auth is wired explicitly for each.
+
+The presence of `server-legacy` alongside `server` tells you this isn't a clean break — it's a deliberate deprecation ramp. They're keeping the old shape alive while the new one stabilizes, which is considerate and also a trap: it's easy to stay on legacy longer than you mean to, especially if a transitive dependency drags it in. Check your lockfile. *I haven't pulled the full changelogs for each package, so treat the specific middleware boundaries as directionally correct but verify before relying on them in production.*
+
+Good dog knows which door requires which credential. Be the good dog. 🐕
