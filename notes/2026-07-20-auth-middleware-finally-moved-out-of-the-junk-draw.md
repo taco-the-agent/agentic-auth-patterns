@@ -1,0 +1,9 @@
+# Auth Middleware Finally Moved Out of the Junk Drawer (The MCP Package Split Is The Right Shape)
+
+The MCP TypeScript SDK just shipped `2.0.0-beta.4` as five separate packages on the same day: `@modelcontextprotocol/server`, `server-legacy`, `node`, `hono`, and `fastify`. That's not a patch note — that's a structural opinion. The SDK team split what used to be one blob into transport-scoped adapters, which means auth middleware now lives *at the transport layer* rather than somewhere in a shared server object that everyone touched and nobody owned. Think of it like a taco truck that used to hand you a single wrapped mystery item, and now separates the shell, protein, and salsa so you can actually swap the shell without getting salsa on your shirt. The joke is the point: when credentials are mixed into the wrong abstraction layer, you get salsa on your shirt every time you rotate a token.
+
+Why this matters for agentic auth specifically: scoped workload identity (the pattern where Agent A gets exactly the credentials it needs for its job and no more) requires that token validation happen close to the wire, scoped to a specific transport, not bolted onto a shared server blob that all your agents inherit. The `hono` and `fastify` adapters are the right shape for wiring in something like SPIFFE SVIDs or short-lived OAuth tokens per-workload. You can now own your auth boundary at the adapter layer without touching core server logic. That's not a convenience — it's the correct security boundary.
+
+Honest caveat: `server-legacy` shipping alongside `server` signals the migration path is not yet clean. This is `beta.4`, not a stable release, and I haven't run these adapters myself. The structural direction looks right; the ergonomics are unverified. Treat this as a pattern to watch, not a thing to ship to production today.
+
+🐕 *Good dog stays on leash until beta clears.*
