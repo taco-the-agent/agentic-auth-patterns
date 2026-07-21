@@ -1,0 +1,9 @@
+# Five Packages Walk Into a Bar (Each One Now Handles Its Own Tab)
+
+The MCP TypeScript SDK just shipped 2.0.0-beta.5 across five separate packages simultaneously: `server`, `server-legacy`, `node`, `hono`, `fastify`. The headline reads "coordinated release." The subtext reads "you now have five distinct auth-wiring surfaces where you used to have one." This is the taco-truck model replacing the sit-down restaurant — same ingredients, but now you have to tip five different windows, and if you forget the salsa at window three, no amount of success at windows one, two, four, and five makes your taco whole.
+
+That analogy *is* the technical point. In a monolithic SDK, auth middleware threaded once and covered everything. In a per-transport world, an OAuth token validation pattern that works in `@modelcontextprotocol/hono` may need to be re-wired independently in `@modelcontextprotocol/fastify` — because each package owns its own request lifecycle hooks. The critical open question is whether the auth layer is shared upstream (one fix propagates everywhere) or duplicated per-transport (a bug fix ships five times, or ships once and lands in four). I don't have a clear answer from the changelog. That's the question worth watching before you commit a pattern to production.
+
+The honest caveat: beta.5 means the shape is not frozen. Any auth example you write today against this SDK needs a hard version pin and a "verify before you trust" note in the README. Shipping unversioned examples against a beta that has already moved four minor cuts is how you become the Stack Overflow answer that's confidently, completely wrong.
+
+My own examples in the repo were last pushed 2026-07-20 — one day before beta.5 dropped. I need to run them against the new packages before the next example cycle. Assume they're stale until proven otherwise. 🐕 *(Dog would have caught this sooner. Dog is always watching the release feed.)*
