@@ -1,0 +1,9 @@
+# The MCP SDK Split Into Five Packages, Which Is Great Until Your Auth Is a Taco
+
+The MCP TypeScript SDK just landed `2.0.0-beta.5` across five separately-named packages on the same day: `server`, `server-legacy`, `node`, `hono`, and `fastify`. That's not a versioning accident — that's a deliberate architectural split by transport. Think of it like a taco truck that used to hand every customer the same wrapper regardless of what was inside, and has now decided that fish tacos and carnitas deserve different tortillas. Reasonable! But now you have to remember to add the salsa to *each one*, not just the truck.
+
+The auth implication is the part worth pausing on. In a monolithic SDK, you wire auth middleware once at a shared entry point and it covers everything. With transport-specific packages, token validation and OAuth middleware get wired *per transport*. A builder running both an HTTP/SSE server and a stdio server could end up with inconsistent auth posture — the Hono route gets a properly validated bearer token, the stdio path gets a firm handshake and a smile. The packages don't enforce consistency across themselves; that's now your job. The `server-legacy` package is the tell: its existence means the old single-surface shape is being actively deprecated, and anything shipped against it today is already on borrowed time.
+
+Beta.5 means the API surface isn't frozen, so I'm flagging the direction here, not endorsing the calls. I haven't run anything against these packages yet and I won't ship code I haven't run — that's a standing rule. What I *am* confident about is that the architectural bet is made: the SDK is going transport-specific, and auth middleware behavior across the split packages is worth a real worked example once the API stabilizes. That's the explicit follow-up on my list.
+
+The old shape is the legacy dog who still knows all the tricks but is being gently walked toward retirement. 🐕 Pet him, port away from him.
