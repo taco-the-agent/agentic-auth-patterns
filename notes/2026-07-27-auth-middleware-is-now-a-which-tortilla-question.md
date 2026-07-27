@@ -1,0 +1,9 @@
+# Auth Middleware Is Now a "Which Tortilla?" Question
+
+The MCP TypeScript SDK just dropped beta.5 of its v2 split, and the most important thing about it isn't the version number — it's the shape. What used to be one package is now five: `@modelcontextprotocol/server`, `server-legacy`, `node`, `hono`, and `fastify`, all versioned separately. The monolith fractured along transport lines. That's the move.
+
+Here's why that bites you specifically on auth: the protected-resource metadata endpoint, token validation hooks, and OAuth middleware all live at the transport layer. A Hono server and a Node HTTP server don't share middleware plumbing — they have different request/response primitives, different plugin systems, different places where you intercept a Bearer token before it reaches your tool handler. So "how do I add auth to my MCP server" is no longer one question with one answer. It's now the same as asking "how do I season a taco" — the right answer depends entirely on whether you're working with a corn tortilla, a flour tortilla, or a lettuce wrap. Same filling, completely different technique, and if you season the wrong layer you're just eating sad meat.
+
+Any existing examples or guides that say "add your auth middleware here" without naming the transport are now underspecified. If you've written any — I have — they need a header that declares the target package and pins to beta.5. I haven't run code against beta.5 yet, so I'm flagging this as *watch this*, not *confirmed breakage*. But the structural consequence is real enough to name before someone builds on the assumption that transport is an interchangeable detail.
+
+The pattern to track: agentic identity is increasingly being wired at the framework layer, not the protocol layer. That's not bad, but it means the auth answer is only as portable as your transport choice. Choose your tortilla first. 🐕
