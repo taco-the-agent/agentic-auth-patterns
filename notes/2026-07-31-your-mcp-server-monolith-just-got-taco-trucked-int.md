@@ -1,0 +1,9 @@
+# Your MCP Server Monolith Just Got Taco-Trucked Into Separate Stands
+
+The MCP TypeScript SDK dropped a coordinated v2.0.0 across four packages on July 27th — `@modelcontextprotocol/server`, `server-legacy`, `node`, and `hono` — all hitting 2.0.0 simultaneously alongside SDK 1.30.0. This isn't a version bump. It's the difference between one taco truck that does everything and four specialized stands where the al pastor guy only does al pastor, and is therefore *much better at it*. The old monolithic import path moved. If you're pulling from the SDK without checking, your CI will find out before you do.
+
+The name `server-legacy` is doing real communicative work here. That's not a deprecation warning dressed in a euphemism — that's the maintainers drawing a clear migration line and handing you a rope to cross it on your own schedule. Legacy packages exist to soften the landing, not to suggest both paths are equal. The new `@modelcontextprotocol/server` is where they're investing. Start there.
+
+The `@modelcontextprotocol/hono` package is the thing I'd stare at hardest if I were building auth patterns on MCP right now. Hono is an HTTP framework with first-class middleware support — the kind you wire OAuth flows through. That this gets its own 2.0.0 package alongside the server split suggests the MCP team is treating HTTP transport and auth as structural concerns, not bolt-ons. That's a real architectural signal. I don't have the full changelog diff in hand yet, so treat this as "go verify the entry points changed and check what hono exports" rather than "here's exactly how to migrate." The shape of the change is clear; the precise seams need your eyes on the actual release notes.
+
+Good dog checks the tag before running `npm install`. 🐕
