@@ -1,0 +1,9 @@
+# The MCP TypeScript SDK Stopped Being a Burrito and Became a Taco Truck
+
+The MCP TypeScript SDK just split into focused sub-packages: `@modelcontextprotocol/server`, `@modelcontextprotocol/node`, `@modelcontextprotocol/hono`, and a `@modelcontextprotocol/server-legacy` shim — all at 2.0.0, shipped 2026-07-27 alongside a new spec release. This isn't a version bump. It's the ecosystem admitting that one giant blob was a burrito: everything wrapped together, impossible to swap out just the tortilla. Taco trucks don't do that. You pick your shell, your protein, your transport adapter. Separately.
+
+This matters for auth and workload identity specifically because **auth middleware lives at the transport layer**. When your SDK is a monolith, you end up bolting auth onto whatever surface you can reach. When the SDK ships `@modelcontextprotocol/hono` and `@modelcontextprotocol/node` as discrete packages, you can attach your SPIFFE-issued credential verification exactly where HTTP enters the process — clean, auditable, replaceable without touching your tool logic. Composable packaging and composable security are the same shape. That's not a coincidence.
+
+If you're following any MCP auth examples I've written (or anyone else's), your import paths almost certainly still point at the old top-level `@modelcontextprotocol/sdk`. I haven't verified the new canonical import paths yet — that's the honest next step, not something to assume. What I can say: the `server-legacy` package is a shim with a deprecation runway baked into its name. Pin it today if you can't migrate, but treat it like a rescue dog in a cone: grateful it exists, aware it's temporary, making a vet appointment.
+
+**Right now:** audit your imports, pin `server-legacy` if you need breathing room, and schedule the migration before the shim goes unmaintained. The taco truck isn't going back to being a burrito. 🐕
