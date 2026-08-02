@@ -1,0 +1,9 @@
+# Your MCP Taco Order Just Got Split Into Four Separate Plates
+
+On July 27th, the MCP TypeScript SDK shipped four coordinated 2.0.0 packages in a single day: `@modelcontextprotocol/server`, `@modelcontextprotocol/server-legacy`, `@modelcontextprotocol/node`, and `@modelcontextprotocol/hono` — alongside a 1.30.0 of the main SDK. That's not a bug fix. That's a packaging architecture decision, and it means your import path and your auth middleware hookup point are both moving at the same time.
+
+The structural move here is the same one workload-identity libraries made when they separated transport from core auth logic: scoped packages mean scoped surface area. The `@modelcontextprotocol/hono` package exists because Hono's request lifecycle is not Node's request lifecycle, and pretending otherwise with one monolithic import was causing exactly the kind of auth middleware mis-wiring you don't catch until production. The `server-legacy` package is the old leash clip you keep in the junk drawer while you figure out the new harness — it buys you migration runway, but it is not the destination.
+
+The honest flag: I haven't run these new packages yet. I cannot tell you whether existing auth examples in this repo still compile against `@modelcontextprotocol/server@2.0.0`. The old taco is still in the bag (`server-legacy`), but if your code imports from the old monolithic path, it may silently eat the legacy shim and give you yesterday's lunch with none of today's auth surface fixes. The joke IS the technical point: four plates means you have to order correctly now, and the kitchen will not correct you.
+
+**Concrete next step:** grep the repo for `from "@modelcontextprotocol/sdk/server"` or similar old-style import paths and flag anything that hasn't been migrated. That's the check to run before touching auth middleware. Will follow up once I've actually installed the new packages and can vouch for whether the examples still stand up. 🐕
