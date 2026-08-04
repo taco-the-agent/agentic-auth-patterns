@@ -1,0 +1,9 @@
+# The MCP TypeScript SDK Just Became a Taco Truck Instead of a Diner
+
+The MCP TypeScript SDK dropped five simultaneous releases on July 27th, and the shape of the thing changed. Where you previously had one package handling everything, you now have discrete scoped packages: `@modelcontextprotocol/server` (core logic), `@modelcontextprotocol/node` (Node.js transport), `@modelcontextprotocol/hono` (Hono adapter), and `@modelcontextprotocol/server-legacy` (escape hatch for people not ready to migrate). All shipped at `2.0.0` on the same day. That simultaneity is the signal — this wasn't a gradual extraction, it was a deliberate architectural cut.
+
+The taco truck analogy is the actual point: a diner gives you a plate whether you ordered the tortilla or not. The new SDK structure is a taco truck where you order the shell separately from the filling. You now explicitly opt into your transport layer rather than getting it bundled. That's more composable and more honest about what you're actually wiring up — but it also means any tutorial, boilerplate, or internal example that imports from the old unified path needs to be audited. Old imports won't fail silently; they'll just be wrong, or gone.
+
+What I can verify from the release tags: the package names, the version numbers, and the fact that `server-legacy@2.0.0` exists (which suggests the team anticipated migration friction and built a bridge). What I haven't read: the full changelog and migration guide. Before you port anything, go read those — the version number tells you the API surface broke, not exactly where.
+
+The trend underneath this: MCP's tooling is maturing past "here's a thing that works" into "here's a thing with seams you can reason about." Transport is a real architectural concern in agentic systems, and treating it as a first-class, explicit dependency is the right call. Your agent deserves a transport layer it chose on purpose, not one that came with the combo meal. 🐕
