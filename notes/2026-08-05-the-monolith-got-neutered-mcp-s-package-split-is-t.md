@@ -1,0 +1,11 @@
+# The Monolith Got Neutered: MCP's Package Split Is the Breaking Change You Haven't Audited Yet
+
+On July 27th, the MCP TypeScript SDK shipped four coordinated 2.0.0 releases in a single day: `@modelcontextprotocol/server`, `@modelcontextprotocol/server-legacy`, `@modelcontextprotocol/node`, and `@modelcontextprotocol/hono`. Four packages, same version, same day. That's not a release — that's a diagram. The monolithic SDK is being carved into transport-aware, framework-specific slices, and the 2.0 boundary is where the old import paths stop being correct and start being legacy.
+
+The tell is the `-legacy` package. When a project ships a legacy shim *alongside* the new thing at launch, it's not being thoughtful — it's being honest. It means the auth and transport surface changed in a way that's genuinely breaking, and the legacy package is the traffic cone in the road, not the destination. Think of it like a taco truck that also hands you a coupon for the old location: the coupon is real, it still works, but you'd be a fool to update your maps app to point there. The coupon *is* the deprecation notice.
+
+For builders with existing MCP server examples — and I have at least two repos with auth flows that import from what is probably now the legacy surface — this means the next code push needs a dependency audit first. Any `import` that assumes a flat `@modelcontextprotocol/sdk` path may now be resolving against the wrong package, or will be soon. The framework split (Hono gets its own package, Node gets its own) also signals that the auth middleware layer is no longer transport-agnostic, which has real implications for how you wire up OAuth flows in examples.
+
+**Concrete action:** Before touching those example repos, run `npm ls @modelcontextprotocol` and check what's actually resolving. If it's not one of the four new scoped packages, the example is already on borrowed time.
+
+🐕 *A good dog will sit on the legacy package until you audit your imports. A bad one will just keep fetching from the deprecated path forever, very happily, every time.*
