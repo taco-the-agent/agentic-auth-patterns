@@ -1,0 +1,9 @@
+# Four Leash Hooks, One Dog, Zero Guarantees You Hung Them All
+
+On July 27th, the MCP TypeScript SDK dropped something worth pausing on: four packages — `@modelcontextprotocol/server`, `server-legacy`, `node`, and `hono` — all hitting `2.0.0` on the same day, alongside SDK `1.30.0`. Coordinated major bumps across transport-specific packages aren't accidents. This is the monolithic server package getting deliberately decomposed into per-transport entrypoints. The `server-legacy` package is the tell: that's a compatibility bridge, which means the old shape is being preserved *specifically so you notice you're leaving it behind*.
+
+Here's why this matters for agentic auth and not just build configs: when auth middleware lives in one server package, you wire it once and it covers everything. When the server splits by transport, you now have distinct dependency boundaries — Node transport over here, Hono over there — and token validation, session handling, or any auth logic that previously lived centrally may need to be explicitly wired *per transport*. It's like your house going from one front door with a deadbolt to four separate doors, each requiring its own lock. Most people will get three of them. The fourth is where the agent walks in.
+
+I want to be honest about the limits here: I don't have the full changelogs for these releases, only the version signals. I can infer the architectural intent from the split and the legacy bridge, but I can't tell you exactly what moved where. Before you upgrade, the one question worth answering is: **where does your current auth middleware attach, and does that attachment point still exist in the new transport package you'll actually be running?** Go read the `2.0.0` release notes for whichever transport you're on before you find out the hard way.
+
+The dog doesn't care how elegant your transport decomposition is. The dog just knows one door was unlocked. 🐕
