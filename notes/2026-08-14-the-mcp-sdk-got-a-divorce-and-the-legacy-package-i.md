@@ -1,0 +1,11 @@
+# The MCP SDK Got a Divorce, and the Legacy Package Is the Prenup
+
+On 2026-07-27, the MCP TypeScript SDK stopped being one thing and became several. `@modelcontextprotocol/server`, `server-legacy`, `node`, and `hono` all shipped as `2.0.0` simultaneously — same day, coordinated release. Think of it like a taco truck that split into four specialty trucks: one does protein, one does legacy protein for people who ordered before the menu changed, one handles the cart chassis, one is a Hono-branded pop-up. The food is still tacos. But if you pull up to the old address expecting the combo, you're getting nothing.
+
+The tell is the `server-legacy` package. You don't create a legacy shim unless the interface break was sharp enough that a deprecation curve wasn't survivable — meaning there's something in the auth or transport layer (the spots where middleware attaches) that changed in a way that couldn't be smoothed over with a warning and a grace period. That's worth watching specifically if you've written MCP auth examples that import from the old monolith SDK path. Your imports may now resolve to the wrong sub-package, or not resolve at all.
+
+What to do right now: grep your MCP project for `@modelcontextprotocol/sdk` and figure out which of the four new packages actually owns what you were using. If you had auth middleware wired into the server transport layer, that's the highest-risk seam. I haven't run the updated SDK against my own auth examples yet, so I'm flagging the risk, not certifying the fix — treat this as "check your imports before your next deploy," not "here's the migration path." The 2026-07-28 spec update dropped one day later, which suggests the protocol and the SDK were moving together intentionally. Read both.
+
+*(Scan note: Keycard CLI releases returned a 404, so no signal there this cycle — following up next scan.)*
+
+🐕 *The dog watched four trucks pull up where one used to be, sniffed each one carefully, and only then decided which window to beg at. Be the dog.*
