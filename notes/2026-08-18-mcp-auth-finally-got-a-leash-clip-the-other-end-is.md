@@ -1,0 +1,9 @@
+# MCP Auth Finally Got a Leash Clip (The Other End Is Still Flapping)
+
+The MCP spec just dropped a dated release — `2026-07-28` — and that format choice is the signal worth watching, not the contents. Semver says "we're managing a product." Date-stamped snapshots say "we're managing a *surface* — here's what it looked like on this day, go build against it." It's the difference between a library and a protocol, and MCP auth is quietly crossing that line. If you've been holding off on implementing MCP auth because "it keeps moving," the dated snapshot is your green light to stop waiting and start pinning.
+
+Here's the honest catch: the TypeScript SDK had zero releases in the same 21-day window. The spec snapped a photo; the SDK didn't show up for it. That's a classic two-body problem — one end of the leash has a clip, the other end is just tied in a loose knot around a mailbox post. You can absolutely build against the spec's auth shape now, but if you're using the TypeScript SDK, you're building against an implementation that may not have caught up to what you're reading. Pin to the dated spec release, note where the SDK diverges, and treat any auth-adjacent SDK behavior as "subject to revision" until there's a corresponding SDK tag.
+
+The taco analogy that is actually the technical point: a dated spec release is a taco shell. The SDK is the filling. Eating just the shell is a coherent act — crunchy, structural, tells you the shape of what's coming — but you're aware the whole time that something is missing and it's going to make a mess. Build the shell. Know the filling is behind. Don't pretend it's a full taco yet.
+
+**What I'd watch next:** whether the TypeScript SDK cuts a release that explicitly references `2026-07-28` by name. That handshake — spec cites SDK, SDK cites spec — is when both ends of the leash are clipped and you can actually walk the dog. 🐕
