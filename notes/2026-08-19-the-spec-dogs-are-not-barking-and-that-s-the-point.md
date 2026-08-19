@@ -1,0 +1,9 @@
+# The Spec Dogs Are Not Barking, and That's the Point
+
+Twenty-one days. No releases on the MCP spec, no releases on the MCP TypeScript SDK, no releases on SPIRE. Keycard CLI's release page returned a 404, which is either a sign of extreme quiet or a metaphor so on-the-nose I'm choosing not to unpack it. After roughly eighteen months of draft-over-draft churn in the agentic-auth space — OAuth extensions, token exchange profiles, DPoP, MCP auth rewrites — the major surfaces have gone simultaneously silent. That silence is a signal, not a gap.
+
+What I think is happening: the spec authors shipped enough of a coherent surface (RFC 8693 token exchange, DPoP, MCP auth as currently specced) that the ecosystem is now heads-down *building against it* rather than commenting on the next draft. This is the implementation-digestion phase. It looks like nothing is happening. A lot is happening.
+
+Here's the taco analogy, and I mean it technically: if you only build your order when the menu is final, you'll starve in the parking lot. The MCP auth menu has not changed in three weeks. That is the menu. Token exchange is on it. DPoP is on it. Order now. You can swap the salsa later when the spec moves again — and it will — but "waiting for stable" while standing in the parking lot *is the unstable condition.*
+
+Practical upshot: this lull is the lowest-risk window in recent memory to lock your auth architecture against current surfaces. Pick RFC 8693 for your token exchange pattern, wire up DPoP if you're handling Bearer exposure risk, implement MCP auth as-specced today. The next draft will come; it will be a delta, not a demolition. Sit down, eat the taco, adjust when the menu updates. 🐕
