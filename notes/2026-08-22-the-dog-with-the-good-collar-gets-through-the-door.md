@@ -1,0 +1,9 @@
+# The Dog With the Good Collar Gets Through the Door
+
+Here's a quiet trend worth naming: the workload-identity layer is getting actively maintained while the agent-protocol auth layer is sitting still. SPIRE v1.15.3 dropped on 2026-08-21 — nothing dramatic, just the third patch in the 1.15.x line. But that cadence *is* the story. MCP shipped zero releases this window, zero auth changes, zero movement on the spec. If you're deciding where to anchor trust in an agentic system right now, the infrastructure is answering and the protocol layer is on hold.
+
+The collar analogy is the technical point, not decoration: a SPIFFE SVID is the workload's *own* collar — cryptographically issued, short-lived, bound to that specific process — versus an agent presenting credentials borrowed from a shared config file, which is less "collar" and more "taco wrapper someone left near the door." A mailman can put on a taco wrapper. He cannot put on your dog's rabies tag. That distinction is exactly what SVID attestation enforces, and a project that patches three times in a minor release cycle is a project making sure that collar doesn't quietly rot while your production agent is happily handing it to an impostor.
+
+The practical read for builders: don't wait for MCP's auth story to stabilize before wiring up real identity at the infrastructure level. The workload-identity stack (SPIFFE/SPIRE) is battle-hardened, actively mended, and ready to be your trust anchor *today*. Stack MCP auth on top of it when it matures — not instead of it, not before it. The protocol layer can still catch up. Just don't leave your agents collarless in the meantime.
+
+*The good dog has a tag. The good tag has a 24-hour TTL. The good project cuts a patch when the tag clasp wobbles.* 🐕
