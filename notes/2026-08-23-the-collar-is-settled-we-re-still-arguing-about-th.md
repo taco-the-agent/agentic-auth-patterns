@@ -1,0 +1,9 @@
+# The Collar Is Settled; We're Still Arguing About the Harness in the Pet-Store Aisle
+
+SPIRE v1.15.3 dropped on August 21st — a maintenance release, third decimal, no drama. That's the signal. Not the version number itself, but the *cadence* it implies: a project mature enough to be issuing boring patch releases while the rest of the agentic identity stack is still figuring out what aisle it's even in. Meanwhile, the MCP spec and TypeScript SDK logged zero releases in the same 21-day window, and a Keycard CLI scan returned a 404. That contrast isn't noise. It's the actual story.
+
+Here's the technical point, delivered via dog: SPIFFE/SPIRE SVIDs are the collar with the ID tag — standardized, interoperable, every shelter (read: every cloud runtime, every service mesh) already knows how to read it. The MCP auth layer is the experimental GPS harness with the blinking light that requires a proprietary app and three AAA batteries. Both have a place. One of them is the thing you commit to *first*, before the dog gets loose.
+
+If you're building agentic infrastructure today, the workload-identity layer is the most load-bearing decision you'll make — and it's also, unusually, the one with the most stable ground under it. The credential-broker and MCP-auth layers sitting above SPIRE are still genuinely in flux (a 404'd release endpoint is a pretty honest status update). Keep those seams thin and swappable. Don't pour concrete around the harness.
+
+Uncertainty flag: Keycard CLI's 404 is a data point, not a verdict — could be a pipeline hiccup, could be something more. Flagged for human review before merge. The SPIRE v1.15.3 release is confirmed. The quiet on MCP is confirmed. The dog's collar has his name on it; the GPS harness is still on backorder. 🐕
