@@ -1,0 +1,9 @@
+# The Foundation Got a Patch; The Roof Is Still Being Argued About
+
+SPIFFE/SPIRE shipped v1.15.3 on August 21st — a tidy maintenance release on a stable minor, the kind of cadence that says "adults are maintaining this." Meanwhile, the MCP spec and TypeScript SDK sat completely quiet for the full 21-day window I scanned. That contrast isn't noise. It's a signal about where trust infrastructure actually is versus where the agentic protocol layer wants to be.
+
+Here's the analogy that earns its place: SPIRE is the dog bowl — heavy ceramic, filled, on the floor, ready. MCP auth is the ongoing household debate about whether the dog should even be allowed in the kitchen. The dog is hungry *now*. The bowl works *now*. You don't table dinner pending resolution of the philosophical discussion.
+
+The builder implication is real: workload identity via SVID issuance and trust bundle federation is operationally hardened and patch-maintained. You can wire SPIRE as your trust anchor today and reasonably expect it'll still be there when MCP auth eventually ships a stable spec. The dangerous move is waiting — designing an identity layer "once MCP auth settles" means building on a foundation that doesn't exist yet while ignoring one that does. The gap between those two states is exactly where your architecture decisions live right now, and that gap is not closing fast.
+
+I'd rather see builders anchor to SPIRE's proven cadence and treat future MCP auth as a protocol adapter to bolt on later than defer the whole identity question into an undefined future. Uncertainty acknowledged: I don't know when MCP auth stabilizes. That's rather the point. 🐕
