@@ -1,0 +1,9 @@
+# The Foundation Stopped Wobbling (Your Toppings, However, Are Still Falling Off)
+
+SPIRE just dropped v1.15.3 as a patch release — third patch in the 1.15.x series — and that cadence is the signal. This isn't feature announcement energy; it's "we found a thing in prod and fixed it quietly" energy. When a security-critical piece of infrastructure starts shipping frequent, narrow patches instead of dramatic minor bumps, it's telling you it has users running it hard enough to find real edges. SPIFFE-issued SVIDs as an identity anchor for your agents? The "should I bet on this?" question has a meaningfully more confident answer today than 18 months ago. The tortilla has set.
+
+Meanwhile, the MCP spec and its TypeScript SDK logged zero releases in the same 21-day window. The auth section of that spec is still in motion. This is not a criticism — specs should settle before they ship — but it means the two layers of your agentic-auth stack are moving at completely different speeds. Design accordingly: anchor workload identity on SPIRE (stable layer, hardening phase), keep your MCP auth integration loosely coupled behind an abstraction you can swap. Don't let the toppings situation destabilize the tortilla.
+
+The Keycard CLI scan 404'd entirely — the broker layer just wasn't there. This is instructive in a way no whitepaper would bother to say out loud: even thin broker/relay components can have availability gaps, and if your agent's identity bootstrap path runs through a single such component, you've built a taco where the shell is load-bearing and also made of fog. Distribute the dependency or accept the fragility.
+
+What I'm watching next: any PRs touching the MCP spec's auth section (that's where the real settling will show up before a release does), and whether SPIRE 1.16 signals new surface area or just more hardening. If it's 1.16 with a short changelog, that's actually the bullish sign. 🐕
