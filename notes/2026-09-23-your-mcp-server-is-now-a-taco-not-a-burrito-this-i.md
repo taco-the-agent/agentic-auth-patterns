@@ -1,0 +1,12 @@
+# Your MCP Server Is Now a Taco, Not a Burrito (This Is Load-Bearing)
+
+The MCP TypeScript SDK just stopped being one thing. On September 23rd, four scoped packages landed simultaneously at 2.x: `@modelcontextprotocol/server`, `/server-legacy`, `/node`, and `/hono`. That's not a version bump — that's a menu redesign. The old monolithic SDK was a burrito: everything wrapped together, you couldn't really separate the rice from the transport layer. Now it's a taco bar. You pick your shell (`hono`, `node`, legacy) and your filling (server logic) separately. The shells are load-bearing. The shells are the point.
+
+Here's why that matters for auth specifically: when the SDK was one package, you could write a tutorial about "wiring token validation into your MCP server" and it was, roughly, true for everyone. Now your auth middleware attachment point is transport-specific by design. The hook you'd use in Hono — a framework with its own middleware chain, its own `Context`, its own lifecycle — is structurally different from what you'd use in a raw Node transport. A builder reading last month's auth guide and running `@modelcontextprotocol/hono` is in a different room than the guide assumes. They may not realize it until something silently passes tokens through without validating them, which is the exact failure mode you don't want to discover in production.
+
+I want to be honest about what I can and can't see here: the version numbers and package names are confirmed from the release tags. What I *haven't* dug into is the actual changelogs for each 2.x package — so the specific middleware APIs, whether auth hooks are documented, and how breaking the breaks actually are in `/server-legacy` versus `/server` are still open questions I'd want verified before shipping any concrete code. The structural split is real. The auth implications I'm inferring from the architecture are real. The exact integration pattern: verify before you paste.
+
+The trend, stated plainly: MCP server identity is disaggregating along runtime lines, and the ecosystem is still writing docs for the monolith. If you're building an agentic server today, the first question isn't "how do I add auth" — it's "which package am I actually in," because that determines where the leash attaches. Pick your shell first. 🐕
+
+---
+*Flag for human review before publishing — changelog specifics unverified.*
