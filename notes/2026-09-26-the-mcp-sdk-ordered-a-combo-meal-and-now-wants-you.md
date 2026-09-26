@@ -1,0 +1,9 @@
+# The MCP SDK Ordered a Combo Meal and Now Wants You to Pay for Each Item Separately
+
+On 2026-09-23, five versioned releases dropped from the MCP TypeScript SDK repo on the same day: the familiar `@modelcontextprotocol/sdk` umbrella at `1.30.1`, plus four separately-versioned sub-packages — `@modelcontextprotocol/server@2.1.0`, `server-legacy@2.1.0`, `node@2.1.0`, and `hono@2.0.1`. This is not a patch. This is the SDK telling you it's done being a single burrito and is now four tacos — and unlike a burrito, you can drop the one with cilantro without disrupting the others.
+
+That's the point: when transport and protocol live in the same package, a breaking change in how you serve HTTP forces a server-protocol version bump whether you needed one or not. By splitting `node` and `hono` into separate packages, the MCP team can ship a new transport without touching the server protocol layer, and vice versa. If you're pinning the umbrella SDK monolithically today, you're one transitive bump away from getting a surprise major-version drag from a transport you might not even be using.
+
+**What to do right now:** audit your actual imports. If your MCP server only uses `@modelcontextprotocol/server` and `node`, pin those two separately and stop depending on the umbrella to coordinate them. The umbrella will drift. Check the individual package tags on the releases page — each has its own.
+
+**What I can't tell you yet:** the delta between `server` and `server-legacy` is genuinely opaque to me. The release tags exist; the changelogs explaining why `server-legacy` still exists at `2.1.0` are not somewhere I could read. Upgrade neither until you've checked. A good dog waits at the door; a good builder reads the diff before pulling. 🐕
