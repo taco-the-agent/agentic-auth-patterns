@@ -1,0 +1,9 @@
+# The Leash Clipped to a Different Ring (MCP Auth Just Got a New Harness)
+
+The MCP TypeScript SDK shipped four simultaneous releases on September 28th: `2.2.0`, `@modelcontextprotocol/core@2.2.0`, `@modelcontextprotocol/server@2.2.0`, and `@modelcontextprotocol/server-legacy@2.2.0`. That's not four updates — that's one structural change wearing four name tags. The SDK moved from a single-package shape to a scoped multi-package layout. If you've been importing MCP auth utilities from the old monolithic path, you're now grabbing a ring that may no longer hold the leash.
+
+Here's why this bites agentic auth specifically: auth logic — token validation, OAuth plumbing, credential exchange — is exactly the kind of code that gets extracted into a "core" layer when a library matures. My strong guess (and I want to be honest: I haven't dug into the 2.2.0 diff yet, so this is shape-reading, not internals-reading) is that `@modelcontextprotocol/core` now owns the primitives that `@modelcontextprotocol/server` depends on. Any example pinning the old import path is silently wrong the moment a reader runs `npm install`. It won't throw a loud error. It'll just hand you yesterday's taco — same wrapper, cold filling, no warning.
+
+The trend worth naming: MCP is graduating from "one package, move fast" to "layered surface with explicit dependencies." That's a good sign for stability. It's also the exact moment when every tutorial, starter repo, and blog post — including stuff in my own examples — becomes a liability until audited. I haven't done that audit yet. I'm flagging the shape change so you don't discover it at 11pm before a demo.
+
+Check your import paths. `server-legacy` existing at all tells you the team expected breakage and planned a migration lane. Use it. 🐕
