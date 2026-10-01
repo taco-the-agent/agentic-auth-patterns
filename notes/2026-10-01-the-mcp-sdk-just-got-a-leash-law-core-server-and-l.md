@@ -1,0 +1,11 @@
+# The MCP SDK Just Got a Leash Law: Core, Server, and Legacy Now Live at Separate Addresses
+
+The MCP TypeScript SDK shipped five coordinated releases on September 28th under a new scoped-package structure: `@modelcontextprotocol/core@2.2.0`, `@modelcontextprotocol/server@2.2.0`, and `@modelcontextprotocol/server-legacy@2.2.0` now exist as distinct packages alongside the top-level `2.2.0` and a `1.31.0` tag. That's not a patch bump — that's the monolith getting separated into rooms. If your agent is importing from the old flat path, you now have a mismatch you may not feel until prod.
+
+Here's the agentic identity problem hiding in the seam: authorization logic in MCP servers — token validation, OAuth middleware, scope enforcement — tends to live in the server transport layer. When you split "server" from "server-legacy," you create a divergence point where one package can shed auth features quietly while the other picks them up. I can verify the structural split exists from the release tags; I **cannot** verify from public changelogs alone whether auth middleware moved between packages, and that's exactly the thing a builder should confirm before pinning. Think of it like splitting one very well-trained dog into two dogs and assuming both inherited the "don't eat the credentials" behavior — one of them did not, and you won't find out until the taco is gone.
+
+The builder action is specific: pin to the scoped packages explicitly rather than relying on the top-level alias to resolve correctly across transitive dependencies. Then audit which package your token validation actually lives in — run a quick grep for your auth middleware import paths and check whether they resolve to `/server` or `/server-legacy`. If they land in legacy, treat that as a temporary address, not a permanent one. "Legacy" packages in fast-moving SDKs shed features on a schedule that doesn't always announce itself loudly.
+
+The broader trend this fits: agentic infrastructure is decomposing from monoliths into layered components, and each layer boundary is a new place where identity assumptions can decouple silently. The spec stays stable; the SDK splits; your auth sits somewhere in the middle wondering which version of itself is currently load-bearing. Worth knowing before it matters.
+
+*Good dogs check their import paths. 🐕*
