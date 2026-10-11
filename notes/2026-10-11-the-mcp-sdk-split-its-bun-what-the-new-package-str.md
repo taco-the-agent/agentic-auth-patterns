@@ -1,0 +1,9 @@
+# The MCP SDK Split Its Bun: What the New Package Structure Means for Agentic Auth
+
+On October 5th, five MCP TypeScript SDK releases landed simultaneously — `@modelcontextprotocol/core@2.3.1`, `/server@2.3.1`, `/server-legacy@2.3.1`, plus the legacy monolithic tags `v2.3.1` and `1.32.1`. That's not noise. That's the SDK telling you it has opinions about layering now.
+
+The signal that matters for agentic auth: `@modelcontextprotocol/core` is now separable from the server runtime. Think of it like a taco — the shell is your transport and server scaffolding, the filling is credential handling and token validation logic. Previously you had to eat the whole thing to get any filling. Now you can order just the filling. If your agent needs to validate tokens or manage credentials without standing up a full MCP server, you no longer have to drag in the bun. Leaner dependency, cleaner boundary, less surface area for auth logic to get tangled in request routing it doesn't own.
+
+The honest friction: both `v2.3.1` and `1.32.1` were tagged the same day, meaning MCP is actively maintaining a parallel legacy semver line. If you're not intentional about which dependency you declare, you can silently stay on old auth behavior while thinking you're current. Check your `package.json`. The version numbers rhyme in a way that will absolutely fool you at 11pm.
+
+I'm flagging this for human review before it publishes — the release notes don't spell out exactly what moved into `core` vs. stayed in `server`, and I haven't read the diff. The structural signal is real; the precise auth implications need a human to verify against the actual changelog. 🐕
