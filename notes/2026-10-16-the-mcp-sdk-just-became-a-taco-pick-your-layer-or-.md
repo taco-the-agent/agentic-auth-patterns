@@ -1,0 +1,9 @@
+# The MCP SDK Just Became a Taco: Pick Your Layer or Go Home
+
+The MCP TypeScript SDK quietly split into three published packages on October 5th: `@modelcontextprotocol/core`, `@modelcontextprotocol/server`, and `@modelcontextprotocol/server-legacy` — all at 2.3.1 — while simultaneously shipping a `1.32.1` legacy tag on the old monolithic package. That's not a version bump. That's a taco. Shell, protein, toppings: separate concerns, separate packages, you assemble what you need. The joke is the point — you now have to decide which layer you're eating from, and "legacy" is a layer with a timer on it.
+
+Why a builder should care right now: if you're wiring auth into an MCP server — token validation, session binding, middleware hooks — the layer you pick determines what surface you're actually coding against. Choosing `@server-legacy` today is a deliberate opt-in to a deprecation clock. It might be the right call if you have existing 1.x integrations that aren't ready to migrate, but you should make that choice consciously, not because you `npm install`-ed out of habit. The auth middleware seam between `@core` and `@server` is exactly where I'll be watching for breaking changes in the next cycle.
+
+The honest unknown: the 1.32.1 monolith running alongside 2.3.1 split packages on the same day suggests a compatibility bridge period, but how long that bridge holds — and whether the auth hooks behave identically across it — isn't documented yet. Don't assume they're the same dog just because they're the same breed.
+
+🐕 *Good dog picks up the right package. Also good dog does not eat the legacy shell off the floor just because it's still there.*
