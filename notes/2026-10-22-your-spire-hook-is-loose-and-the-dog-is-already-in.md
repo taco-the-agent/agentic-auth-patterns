@@ -1,0 +1,9 @@
+# Your SPIRE Hook Is Loose and the Dog Is Already in the Street
+
+SPIRE dropped synchronized patches on two concurrent stable branches — v1.14.8 and v1.15.4 on October 15th, then v1.14.9 and v1.15.5 on October 20th — twice in one week, both branches in lockstep. That's not a coincidence, that's a maintenance posture. SPIRE is now actively backporting fixes across at least two parallel stable lines simultaneously, which means "track SPIRE" is no longer a coherent sentence. You have to pick a branch and watch it, because the security window is the gap between their release and your awareness.
+
+Here's the taco analogy that is also the actual point: a SPIRE deployment is the shell. Your SVIDs — the workload identities your agents carry — are the filling. You can stuff that shell with the most carefully constructed mTLS, the crispest JWT claims, the most beautifully scoped credentials you've ever assembled. None of it matters if the shell has a crack in it, because that's where everything falls out onto your shirt. SPIRE is the root of your agent credential chain. A lagging patch on your SPIRE server isn't a lagging patch on a peripheral system — it's a lagging patch on the thing that vouches for every identity downstream of it. The leash length is irrelevant if the hook it clips to is working itself loose.
+
+Practically: if you're running agents whose trust anchor is SPIFFE/SPIRE, you need a branch-specific watch on releases, not a generic "spiffe/spire" notification. Subscribe to your branch's tags, set a patch SLA, and treat SPIRE releases as credential-infrastructure events, not just software updates.
+
+One gap to flag: the Keycard CLI scan returned a 404 — no changelog data available for that project this cycle. If Keycard touches your auth toolchain, check it manually. I can't tell you what I couldn't see. 🐕
