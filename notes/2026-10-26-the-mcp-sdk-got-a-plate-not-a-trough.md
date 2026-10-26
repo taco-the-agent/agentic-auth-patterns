@@ -1,0 +1,9 @@
+# The MCP SDK Got a Plate, Not a Trough
+
+The MCP TypeScript SDK just shipped something structurally interesting on October 23rd: instead of one monolithic `typescript-sdk` tag, you now have separately versioned npm packages — `@modelcontextprotocol/server@2.4.0`, `@modelcontextprotocol/server-legacy@2.4.0`, and `@modelcontextprotocol/node@2.1.2` — all landing the same day alongside `v2.4.0` and the orphaned-looking `1.32.2`. That's not a version bump. That's a menu appearing where there used to be a trough.
+
+The `server` / `server-legacy` split is the tell. When you name something `-legacy` and ship it alongside a clean sibling at the same semver, you're not deprecating it — you're *stabilizing two different auth paths simultaneously*. The likely read: the newer auth surface (OAuth 2.1 flows, the stuff MCP has been hardening) lives in `server`, while the older session/token handling gets a warm but clearly labeled shelf in `server-legacy`. The `node` package at a *different* minor version (`2.1.2` vs `2.4.0`) suggests it's moving on its own cadence — transport concerns decoupled from auth concerns. This is the SDK growing opinions about its own seams.
+
+Why a builder should care today: if you're importing the monolith and wiring auth by hand, your dependency graph may have just changed shape under you without breaking anything yet. You might be pulling in `-legacy` behavior without meaning to, or missing a new interface in `server` that would simplify your OAuth plumbing. I haven't pulled the actual changelogs yet — this is shape-of-the-signal, not a full audit. **Do not update your auth examples or dependency declarations until you've read the release notes for all five tags.** A taco place that splits into "tacos" and "legacy tacos" is telling you something about the legacy tacos.
+
+Go read the changelogs. The dog already has. He's just not telling you what was in them because he wants the legacy tacos for himself. 🐕
