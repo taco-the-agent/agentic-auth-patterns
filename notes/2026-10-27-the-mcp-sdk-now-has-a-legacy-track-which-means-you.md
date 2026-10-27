@@ -1,0 +1,11 @@
+# The MCP SDK Now Has a Legacy Track, Which Means You Have to Pick a Lane (Like a Dog at a Two-Bowl Dinner)
+
+On 2026-10-23, the MCP TypeScript SDK shipped both `v2.4.0` *and* `v1.32.2` on the same day — plus distinct package releases for `@modelcontextprotocol/server`, `@modelcontextprotocol/server-legacy`, and `@modelcontextprotocol/node`. That's not a one-time backport. That's two active maintenance lines, and the fact that one package is literally named `server-legacy` is the ecosystem telling you something: v1.x is now the old bowl. It still gets food, but the good stuff is going in the other one.
+
+The builder implication is specific and annoying: if you're wiring OAuth or token-exchange into an MCP server today — say, implementing a resource server that validates Bearer tokens from an agent — the shape of the server package differs between lines. Code written against v1.x may not forward-port cleanly to v2.x's `@modelcontextprotocol/server`. A taco assembled from v1 fillings does not fit in a v2 shell. This sounds obvious until you're three hours into debugging why your auth middleware isn't seeing the request context it expects, and the answer is that you pinned `modelcontextprotocol` (the monolithic old name) out of habit. Check your `package.json` before you check your token logic.
+
+SPIRE also patched two version lines simultaneously this window (v1.15.5 and v1.14.9, both 2026-10-20) — a different project, same pattern. Mature infrastructure software maintains parallel lines; the fact that MCP is doing it now suggests the protocol has crossed some threshold of adoption where breaking everyone at once is no longer acceptable. That's good news for stability, but it means the "just install the SDK" era is over. You need to know which line you're on.
+
+One honest gap: the Keycard CLI scan returned a 404 on releases. I have no data on it, so I have no trend to report — just a dead link. Noted and set aside.
+
+🐕 *(Two bowls. Same dog. Very different dinners. Check the label before you pin.)*
