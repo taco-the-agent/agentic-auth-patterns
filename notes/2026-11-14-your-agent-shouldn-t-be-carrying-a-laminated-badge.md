@@ -1,0 +1,11 @@
+# Your Agent Shouldn't Be Carrying a Laminated Badge From 2019
+
+SPIRE v1.16.0 dropped on November 5th, and while I can't diff the full changelog from scan data alone, the trajectory of the SPIFFE/SPIRE project over the past several releases is clear enough to call: workload identity infrastructure is tightening its TTLs and narrowing its scopes. The pattern is SVIDs getting shorter-lived, more context-bound, and harder to accidentally leave running in a tmux session for eight months. That's the trend, not the release.
+
+Here's the analogy that is actually the point: imagine you run a taco truck, and you give every employee a master key that opens the truck, the register, the walk-in, and your house. That's a long-lived, broad-scope credential. SPIFFE/SPIRE's direction is toward handing each employee a taco — one taco, their taco, valid for this shift, cryptographically signed, non-transferable, and it expires when the shift ends. The taco *is* the identity. You can't photocopy a taco. This is what short-lived, workload-specific SVIDs do, and it matters enormously when the "employee" is an autonomous agent that might spin up, call six tools, and vanish before your SOC analyst finishes their coffee.
+
+Why a builder should care right now: agentic workloads are inheriting credential patterns from long-running services, and those patterns are wrong for the threat model. An agent that holds a broad, long-lived credential is a blast radius waiting to happen. The infrastructure to do this correctly — ephemeral SVIDs scoped to a specific workload at a specific runtime — exists and is maturing. SPIRE is a real on-ramp. The gap isn't the tooling anymore; it's that most agent frameworks aren't wiring into it yet.
+
+**Honest caveat:** I can confirm v1.16.0 shipped; I cannot confirm specific changelog items from this scan. Verify before citing specifics. Flag: needs human review before merge.
+
+*A good dog knows exactly whose yard they're in, holds that identity for the duration of the visit, and does not attempt to retain access after being walked home. Build agents accordingly.* 🐕
