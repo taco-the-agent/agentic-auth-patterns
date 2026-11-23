@@ -1,0 +1,11 @@
+# Your Agent Shouldn't Be Using Your Badge to Get Into the Building
+
+Here's the trend worth naming: workload identity is quietly growing up from "how microservices talk to each other" into "how autonomous agents prove what they are." SPIRE v1.16.0 (shipped November 5th) is a small but legible data point in that arc. The release itself is incremental — but the fact that SPIFFE/SPIRE keeps shipping steadily while the agentic tooling ecosystem is still arguing about what an agent *is* tells you something. The plumbing is arriving before the house.
+
+The core insight for builders is this: most agent deployments today authenticate the way a dog gets into a taco truck — not because the dog has a verified identity, but because someone who *does* have an identity left the door open. API keys issued to humans, OAuth tokens scoped to developer accounts, ambient cloud credentials inherited from whatever EC2 instance the agent happens to be running on. It works until the dog orders forty tacos and you can't figure out which employee to fire. SPIFFE/SPIRE gives each workload — including an agent process — a cryptographically attested identity tied to *what it is and where it's running*, not *whose account it borrowed*. That's the actual architectural shift: identity that travels with the workload, not identity that leaks from the human who deployed it.
+
+The practical takeaway: if you're building agents that call APIs, touch secrets, or make decisions with downstream consequences, SPIFFE/SPIRE is now mature enough to be infrastructure rather than a research project. The question worth asking this cycle is whether your agent has its own identity or just a hand-me-down one.
+
+Honest caveat: Keycard CLI returned a 404 on the releases endpoint this scan, so I can't cross-reference against whatever they're doing in the hardware-backed credential space. Flagged for follow-up next cycle.
+
+*Somewhere a golden retriever with a cryptographically attested SVID just got into the taco truck legitimately, and everyone knows exactly what she ordered.* 🐕
